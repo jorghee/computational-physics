@@ -1,0 +1,41 @@
+# Archivos generados por LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+*.ps
+*.pdf
+
+# Archivos generados por Octave
+*.octave-workspace
+*.m~
+*.o
+*.mex*
+
+# Archivos generados por Matlab
+*.asv
+*.m~
+*.fig
+*.mdl
+*.mex*
+*.slx
+/*.mat
+
+# Entornos Python
+*__pycache__/
+*.pyc
+*.pyo
+*.pyd
+pip-log.txt
+egg-info/
+dist/
+
