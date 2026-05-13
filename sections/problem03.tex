@@ -1,0 +1,61 @@
+\section{Simulación de 5 cuerpos gravitacionales}
+
+\subsection{Enunciado}
+Simular el movimiento de 5 cuerpos sometidos a interacción gravitacional mutua. Cuatro cuerpos de masa $m = 1$ se ubican en las esquinas de un cuadrado de lado $a = 2$, y un quinto cuerpo de masa $m_5 = 5$ se coloca en el centro. Aplicar el método de Euler para integrar las ecuaciones de movimiento y graficar las trayectorias resultantes.
+
+\subsection{Modelo gravitacional y aceleraciones}
+
+El sistema consiste en cinco cuerpos que interactúan entre sí mediante la ley de gravitación. A diferencia de un sistema con un único centro de fuerza, cada cuerpo experimenta la atracción simultánea de los otros cuatro, lo que genera trayectorias altamente no lineales e impredecibles a simple vista.
+
+La aceleración del cuerpo $i$ producida por la influencia gravitacional de los demás cuerpos se expresa como:
+
+\begin{equation}
+    \vec{a}_i = \sum_{j \neq i} \frac{G m_j (\vec{r}_j - \vec{r}_i)}{(|\vec{r}_{ij}|^2 + \varepsilon^2)^{3/2}}
+\end{equation}
+
+donde $\varepsilon = 0.15$ es un parámetro de suavizado que evita la divergencia numérica cuando dos cuerpos se aproximan excesivamente. Sin este término, la magnitud de la aceleración tendería a infinito al reducirse la distancia entre cuerpos, desestabilizando completamente la integración numérica.
+
+El cuerpo central, con masa $m_5 = 5$, ejerce una atracción cinco veces mayor que cada uno de los cuerpos exteriores. Esto implica que los cuatro cuerpos en las esquinas sienten una fuerza dominante hacia el centro, mientras que las interacciones entre ellos generan perturbaciones laterales que desvían sus trayectorias del movimiento circular ideal. El resultado es un sistema caótico donde pequeñas variaciones en las condiciones iniciales o en el tamaño de paso producen trayectorias cualitativamente distintas.
+
+\subsection{Implementación}
+
+La implementación se organiza en tres bloques. El primero define los parámetros físicos del sistema: la constante gravitacional $G = 1$, las masas, el lado del cuadrado $a = 2$, el parámetro de suavizado $\varepsilon$ y el paso de integración $h = 0.002$ con tiempo final $t_\text{fin} = 15$. Luego se establecen las posiciones iniciales de los cinco cuerpos y sus velocidades tangenciales, calculadas a partir de la velocidad orbital $v_\text{orb} = 0.80\sqrt{G M_\text{total} / R}$ con $R = a/\sqrt{2}$, de modo que el sistema parta con cierta inercia rotacional. Finalmente se inicializan los arreglos que almacenarán las trayectorias a lo largo de la simulación.
+
+\inputminted[linenos, frame=lines, fontsize=\footnotesize,
+    breaklines=true, firstline=1, lastline=10
+]{python}{code/problem03.py}
+\inputminted[linenos, frame=lines, fontsize=\footnotesize,
+    breaklines=true, firstline=27, lastline=49
+]{python}{code/problem03.py}
+\captionof{listing}{Parámetros del sistema, condiciones iniciales e inicialización de arreglos.}
+\label{lst:prob3_1}
+
+El segundo bloque contiene la función \texttt{aceleraciones}, que recibe las posiciones actuales de todos los cuerpos y calcula la aceleración neta sobre cada uno aplicando la ecuación gravitacional con suavizado. Seguido del bucle de integración mediante el método de Euler, donde en cada paso se evalúan las aceleraciones, se actualizan las velocidades y posiciones, y se registran las coordenadas en los arreglos de trayectoria.
+
+\inputminted[linenos, frame=lines, fontsize=\footnotesize,
+    breaklines=true, firstline=12, lastline=25
+]{python}{code/problem03.py}
+\inputminted[linenos, frame=lines, fontsize=\footnotesize,
+    breaklines=true, firstline=51, lastline=63
+]{python}{code/problem03.py}
+\captionof{listing}{Función de aceleraciones gravitacionales y método de Euler.}
+\label{lst:prob3_2}
+
+El tercer bloque genera la figura de trayectorias con fondo oscuro. Cada cuerpo se representa con un color distinto: la trayectoria completa se traza con baja opacidad como estela, y el último 25\% del recorrido se resalta con mayor brillo para mostrar la dirección de movimiento reciente. Los marcadores circulares indican la posición inicial y las estrellas la posición final de cada cuerpo.
+
+\inputminted[linenos, frame=lines, fontsize=\footnotesize,
+    breaklines=true, firstline=65, lastline=115
+]{python}{code/problem03.py}
+\captionof{listing}{Configuración visual y generación de la figura de trayectorias.}
+\label{lst:prob3_3}
+
+La Figura \ref{fig:prob3_1} muestra las trayectorias obtenidas para los cinco cuerpos durante el tiempo de simulación $t_\text{fin} = 15$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{images/problem03.png}
+  \caption{Trayectorias de los 5 cuerpos gravitacionales obtenidas mediante el método de Euler. Los círculos indican posiciones iniciales y las estrellas las posiciones finales.}
+  \label{fig:prob3_1}
+\end{figure}
+
+Se observa que los cuatro cuerpos exteriores no describen órbitas cerradas sino trayectorias abiertas y asimétricas. La atracción del cuerpo central domina el movimiento global, actuando como un núcleo gravitacional que curva continuamente las trayectorias de los cuerpos periféricos. Sin embargo, las interacciones mutuas entre estos últimos generan aceleraciones transversales que rompen la simetría inicial del sistema, produciendo el comportamiento caótico visible en la figura. Los cuerpos que parten de posiciones diagonalmente opuestas tienden a alejarse en direcciones contrarias, evidenciando que el sistema no conserva la simetría rotacional más allá de los primeros instantes de la simulación.
