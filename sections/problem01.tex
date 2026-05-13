@@ -1,0 +1,39 @@
+\section{Movimiento parabólico}
+
+\subsection{Enunciado}
+La trayectoria de una partícula es (extraído del libro de Serway o Sears):
+\begin{equation}
+    y = x \tan \alpha_0 - \frac{g}{2v_0^2 \cos^2 \alpha_0} x^2
+    \label{eq:mov_parabolico}
+\end{equation}
+donde $v_0$ y $\alpha_0$ son las condiciones iniciales.
+
+\begin{enumerate}
+    \item Mediante una gráfica determine el alcance mediante la ecuación de arriba. Las condiciones iniciales son $v_0 = \SI{5}{\meter/\second}$ con $\alpha_0 = 60^\circ$.
+    \item Aplicar el método de Heun y encuentre el alcance.
+    \item Haga la comparación de los resultados encontrados. Para ello varíe el tamaño de paso $h$ para que el resultado sea confiable.
+\end{enumerate}
+
+\subsection{Desarrollo y Resultados}
+
+Para dar solución a la primera parte, se grafica la Ecuación \ref{eq:mov_parabolico}. Vamos a usar el lenguaje de programación Python para este problema. La implementación se encuentra en el código \ref{lst:heun}.
+
+\begin{listing}[H]
+\inputminted[
+    linenos,
+    frame=lines,
+    mathescape,
+    fontsize=\small
+]{python}{code/Problema01.py}
+\caption{Implementación de la gráfica de la ecuación \ref{eq:mov_parabolico}.}
+\label{lst:heun}
+\end{listing}
+
+Podemos ver en la figura \ref{fig:prob1} la ejecución de la ejecución de la ecuación implementada.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/problem01_1.png}
+  \caption{Solución analítica.}
+  \label{fig:prob1}
+\end{figure}
