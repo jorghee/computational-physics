@@ -13,7 +13,6 @@
 *.synctex.gz
 *.dvi
 *.ps
-*.pdf
 *_minted/
 *.bcf
 *.run.xml
