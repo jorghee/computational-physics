@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[spanish]{babel}
+\decimalpoint
+\addto\captionsspanish{
+  \renewcommand{\tablename}{Tabla}
+}
+
+\usepackage{csquotes}
+\usepackage{lmodern}
+
+% Maths
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{siunitx}
+
+% Graphs
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+% Code (python)
+\usepackage[newfloat]{minted}
+\usemintedstyle{friendly}
+\SetupFloatingEnvironment{listing}{name=Código}
+
+% Format
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+
+% Bibliography
+\usepackage[backend=biber, style=ieee]{biblatex}
+\addbibresource{bibliography/refs.bib}
+
+% Links and references
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    citecolor=blue,
+    pdftitle={Trabajo Grupal - Primer Parcial - Física Computacional}
+}
+
+% Heads
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{Física Computacional}}
+\rhead{Trabajo Grupal - Primer Parcial}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Portada information
+\title{
+    \vspace{-1.5cm}
+    \rule{\textwidth}{1pt}\\[0.5cm]
+    \textbf{\huge Trabajo Grupal - Primer Parcial}\\[0.3cm]
+    \Large Física Computacional
+    \vspace{0.2cm}
+    \rule{\textwidth}{1pt}
+}
+\author{
+    \textbf{Nombres de los Integrantes:} \\
+    Mamani Huarsaya, Jorge Luis \\
+    Estudiante 2 \\
+    Estudiante 3
+}
+\date{\today}
+
+\begin{document}
+
+% Portada
+\maketitle
+\thispagestyle{empty}
+
+% Abstract
+\begin{abstract}
+    En el presente reporte se abordan diversos problemas de Física Computacional correspondientes al primer parcial. Se analizan sistemas como el movimiento parabólico implementando el método de Heun, interacciones gravitacionales de cuerpos celestes (como el paso del cometa Atlas por el Sol), simulaciones de sistemas de múltiples cuerpos y la generación de figuras de Lissajous en tres dimensiones. Todo esto sustentado mediante cálculos numéricos en Python.
+\end{abstract}
+
+\vspace{1cm}
+
+% Index
+\tableofcontents
+\newpage
+
+% Sections
+\input{sections/problem01}
+% \input{sections/problema2}
+% \input{sections/problema3}
+% \input{sections/problema4}
+
+% References
+\newpage
+\printbibliography[heading=bibintoc, title={Referencias}]
+
+\end{document}
