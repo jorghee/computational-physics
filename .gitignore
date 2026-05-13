@@ -41,3 +41,8 @@ pip-log.txt
 egg-info/
 dist/
 *.venv
+
+# Jupyter Lab
+*.ipynb
+*.ipynb_checkpoints
+
