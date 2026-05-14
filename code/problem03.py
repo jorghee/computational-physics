@@ -1,113 +1,161 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# Parámetros del sistema  
-G    = 1.0
-m    = 1.0
-m5   = 5.0
-a    = 2.0
-eps  = 0.15
-h    = 0.002
-tfin = 15
 
-# Función de aceleraciones
-def aceleraciones(rx, ry, masas, G, eps):
-    N  = len(masas)
-    ax = np.zeros(N)
-    ay = np.zeros(N)
-    for i in range(N):
-        for j in range(N):
-            if i != j:
-                dx    = rx[j] - rx[i]
-                dy    = ry[j] - ry[i]
-                r3    = (dx**2 + dy**2 + eps**2)**1.5
-                ax[i] = ax[i] + G * masas[j] * dx / r3
-                ay[i] = ay[i] + G * masas[j] * dy / r3
+# =========================================================
+#  SIMULACIÓN DE 5 CUERPOS GRAVITACIONALES
+#  4 masas fijas en vértices del cuadrado de lado a
+#  C5: partícula de prueba que orbita bajo su atracción
+# =========================================================
+
+# ---------------------------------------------------------
+# Parámetros del sistema
+# ---------------------------------------------------------
+a    = 2       # lado del cuadrado
+h    = 0.01    # paso de integración (método de Euler)
+tfin = 750     # tiempo final de simulación
+x0   = 2       # posición inicial x de C5
+y0   = 7       # posición inicial y de C5
+vy0  = 0       # velocidad vertical inicial de C5
+
+# ---------------------------------------------------------
+# Barrido de velocidades horizontales iniciales de C5
+# Se prueban distintos vx0 para encontrar órbitas cerradas
+# ---------------------------------------------------------
+vx0_list = np.arange(0, 1.4 + 0.02, 0.02)
+
+# ---------------------------------------------------------
+# Posiciones fijas de las 4 masas en los vértices
+# y radio de colisión para detectar impacto con C5
+# ---------------------------------------------------------
+vx_vert = np.array([ a/2, -a/2, -a/2,  a/2])
+vy_vert = np.array([ a/2,  a/2, -a/2, -a/2])
+R_col   = 0.5
+
+# ---------------------------------------------------------
+# Función de aceleración gravitacional sobre C5
+# Suma la atracción de las 4 masas fijas en los vértices
+# ---------------------------------------------------------
+def acel_cuadrado(x, y, a):
+    vx = np.array([ a/2, -a/2, -a/2,  a/2])
+    vy = np.array([ a/2,  a/2, -a/2, -a/2])
+    ax = 0.0
+    ay = 0.0
+    for k in range(4):
+        dx = x - vx[k]
+        dy = y - vy[k]
+        r3 = (dx**2 + dy**2)**1.5
+        ax = ax - dx / r3
+        ay = ay - dy / r3
     return ax, ay
 
-# Condiciones iniciales
-#   C1:(+a/2,+a/2)  C2:(-a/2,+a/2)
-#   C3:(-a/2,-a/2)  C4:(+a/2,-a/2)  C5:(0,0)
-masas = np.array([m, m, m, m, m5])
-N     = 5
+# ---------------------------------------------------------
+# Simulación con método de Euler para cada vx0
+# Se integra la trayectoria de C5 y se descarta si impacta
+# ---------------------------------------------------------
+trayectorias = []
 
-rx = np.array([ a/2, -a/2, -a/2,  a/2,  0.0])
-ry = np.array([ a/2,  a/2, -a/2, -a/2,  0.0])
+for vx0 in vx0_list:
+    x  = x0
+    y  = y0
+    vx = vx0
+    vy = vy0
+    px = [x]
+    py = [y]
+    impacto = False
 
-R     = a / np.sqrt(2)
-v_orb = 0.80 * np.sqrt(G * np.sum(masas) / R)
+    for t in np.arange(0, tfin, h):
+        ax, ay = acel_cuadrado(x, y, a)
 
-vx = np.array([-v_orb,  v_orb,  v_orb, -v_orb,  0.0])
-vy = np.array([ v_orb,  v_orb, -v_orb, -v_orb,  0.0])
+        vx = vx + ax * h
+        x  = x  + vx * h
+        vy = vy + ay * h
+        y  = y  + vy * h
 
-# Inicializar arreglos
-nmax = int(round(tfin / h)) + 2
-prx  = np.zeros((N, nmax))
-pry  = np.zeros((N, nmax))
+        for i in range(4):
+            if np.sqrt((x - vx_vert[i])**2 + (y - vy_vert[i])**2) <= R_col:
+                impacto = True
+                break
+        if impacto:
+            break
 
-n = 0
-prx[:, 0] = rx
-pry[:, 0] = ry
+        px.append(x)
+        py.append(y)
 
-# Método de Euler
-for t in np.arange(0, tfin - h, h):
-    n += 1
-    ax, ay = aceleraciones(rx, ry, masas, G, eps)
-    vx = vx + ax * h
-    vy = vy + ay * h
-    rx = rx + vx * h
-    ry = ry + vy * h
-    prx[:, n] = rx
-    pry[:, n] = ry
+    if not impacto and len(px) > 1:
+        px = np.array(px)
+        py = np.array(py)
+        dist     = np.sqrt((px[1:] - x0)**2 + (py[1:] - y0)**2)
+        min_dist = np.min(dist)
+        trayectorias.append({
+            'vx0':      vx0,
+            'px':       px,
+            'py':       py,
+            'dist_min': min_dist
+        })
 
-prx = prx[:, :n+1]
-pry = pry[:, :n+1]
+# ---------------------------------------------------------
+# Seleccionar las 5 trayectorias más cerradas
+# ---------------------------------------------------------
+trayectorias.sort(key=lambda t: t['dist_min'])
+N_cerradas = min(5, len(trayectorias))
+candidatas = trayectorias[:N_cerradas]
 
-# FIGURA 
-colores = [
-    [0.2, 0.5, 1.0],
-    [1.0, 0.3, 0.3],
-    [0.2, 0.9, 0.4],
-    [1.0, 0.7, 0.1],
-    [0.8, 0.3, 1.0]
-]
-nombres = ['C1 (+,+)', 'C2 (-,+)', 'C3 (-,-)', 'C4 (+,-)', 'C5 centro']
-
-fig, ax1 = plt.subplots(figsize=(12, 10))
-fig.patch.set_facecolor([0.05, 0.05, 0.08])
-ax1.set_facecolor([0.05, 0.05, 0.08])
-ax1.tick_params(colors=[0.5, 0.5, 0.5])
-ax1.xaxis.label.set_color([0.75, 0.75, 0.75])
-ax1.yaxis.label.set_color([0.75, 0.75, 0.75])
+# ---------------------------------------------------------
+# Figura — trayectorias de C5 + masas fijas
+# ---------------------------------------------------------
+fig, ax1 = plt.subplots(figsize=(10, 8))
+fig.patch.set_facecolor('k')
+ax1.set_facecolor('k')
+ax1.tick_params(colors='w')
+ax1.xaxis.label.set_color('w')
+ax1.yaxis.label.set_color('w')
+ax1.title.set_color('w')
 for spine in ax1.spines.values():
-    spine.set_edgecolor([0.25, 0.25, 0.25])
-ax1.grid(True, color=[0.25, 0.25, 0.25], alpha=0.5)
+    spine.set_edgecolor([0.3, 0.3, 0.3])
+ax1.grid(True, color=[0.3, 0.3, 0.3])
 ax1.set_aspect('equal')
 
-for i in range(N):
-    c = colores[i]
-    # Estela tenue
-    ax1.plot(prx[i, :], pry[i, :], '-',
-             color=c + [0.4], linewidth=1.0)
-    # Cola brillante: último 25%
-    k0 = int(round(0.75 * n))
-    ax1.plot(prx[i, k0:], pry[i, k0:], '-',
-             color=c + [1.0], linewidth=2.0, label=nombres[i])
+colores = [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.5, 1.0],
+    [1.0, 0.0, 1.0],
+    [1.0, 1.0, 0.0]
+]
+for i, tray in enumerate(candidatas):
+    ax1.plot(tray['px'], tray['py'],
+             color=colores[i], linewidth=1.5,
+             label=f"$v_{{x0}}$ = {tray['vx0']:.2f}")
 
-for i in range(N):
-    ax1.plot(prx[i, 0], pry[i, 0], 'o',
-             markersize=9, markerfacecolor=colores[i],
-             markeredgecolor='k', markeredgewidth=1.2)
+# Cuadrado punteado que une los 4 vértices
+vx_cierre = np.append(vx_vert, vx_vert[0])
+vy_cierre = np.append(vy_vert, vy_vert[0])
+ax1.plot(vx_cierre, vy_cierre, 'w--', linewidth=1.2)
 
-for i in range(N):
-    ax1.plot(prx[i, -1], pry[i, -1], 'p',
-             markersize=12, markerfacecolor=colores[i],
-             markeredgecolor='k', markeredgewidth=1.0)
+# 4 masas fijas: círculo relleno
+theta = np.linspace(0, 2 * np.pi, 200)
+colores_masas = [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.5, 1.0],
+    [1.0, 0.0, 1.0]
+]
+for i in range(4):
+    cx = vx_vert[i] + R_col * np.cos(theta)
+    cy = vy_vert[i] + R_col * np.sin(theta)
+    ax1.fill(cx, cy, color=colores_masas[i], edgecolor='w', linewidth=1.0)
 
+# C5: partícula de prueba en el centro (blanco)
+ax1.fill(R_col * np.cos(theta), R_col * np.sin(theta),
+         color='w', edgecolor=[0.7, 0.7, 0.7], linewidth=1.0)
+
+ax1.set_xlim(-12, 12)
+ax1.set_ylim(-10, 10)
 ax1.set_xlabel('x')
 ax1.set_ylabel('y')
-ax1.set_title('Trayectorias — 5 Cuerpos Gravitacionales',
-              color='w', fontsize=14)
-ax1.legend(loc='upper right')
+ax1.set_title('Trayectorias cerradas alrededor de cuatro masas')
+ax1.legend(facecolor='k', labelcolor='w', edgecolor=[0.3, 0.3, 0.3],
+           loc='best')
 
 plt.tight_layout()
 plt.savefig('images/problem03.png', dpi=150,
