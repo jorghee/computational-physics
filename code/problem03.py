@@ -31,7 +31,7 @@ vx_vert = np.array([ a/2, -a/2, -a/2,  a/2])
 vy_vert = np.array([ a/2,  a/2, -a/2, -a/2])
 R_col   = 0.5
 
-# ---------------------------------------------------------
+# --------------------------------------------------------- 
 # Función de aceleración gravitacional sobre C5
 # Suma la atracción de las 4 masas fijas en los vértices
 # ---------------------------------------------------------
