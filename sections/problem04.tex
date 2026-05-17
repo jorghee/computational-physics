@@ -1,5 +1,7 @@
 \section{Movimiento oscilatorio}
-Fabriqué las figuras de Lissajous en tres dimensiones extendiendo el modelo de osciladores armónicos independientes a tres coordenadas. Cada coordenada $(x, y, z)$ obedece una ecuación de movimiento con su propia frecuencia, lo que permite generar curvas 3D al combinar razones enteras entre frecuencias.
+Se fabricaron las figuras de Lissajous en tres dimensiones extendiendo el modelo de osciladores armónicos independientes a tres 
+coordenadas. Cada coordenada $(x, y, z)$ obedece una ecuación de movimiento con su propia frecuencia, lo que permite generar curvas 
+3D al combinar razones enteras entre frecuencias.
 
 \subsection{Modelo}
 El sistema se representa como tres osciladores armónicos desacoplados:
@@ -10,7 +12,8 @@ El sistema se representa como tres osciladores armónicos desacoplados:
 \ddot{z} = -\frac{k_3}{m_3} z.
 \end{equation}
 
-Con $m_1 = m_2 = m_3 = 1$ y $k_1 = l^2$, $k_2 = n^2$, $k_3 = p^2$, las frecuencias quedan $\omega_x = l$, $\omega_y = n$, $\omega_z = p$. Las condiciones iniciales se fijan en $x_0 = y_0 = z_0 = 1$, $v_{x0} = 2.36$, $v_{y0} = v_{z0} = 0$.
+Con $m_1 = m_2 = m_3 = 1$ y $k_1 = l^2$, $k_2 = n^2$, $k_3 = p^2$, las frecuencias quedan $\omega_x = l$, $\omega_y = n$, 
+$\omega_z = p$. Las condiciones iniciales se fijan en $x_0 = y_0 = z_0 = 1$, $v_{x0} = 2.36$, $v_{y0} = v_{z0} = 0$.
 
 \subsection{Casos y configuración}
 Se evalúan siete ternas $(l, n, p)$ para generar familias distintas de curvas 3D:
@@ -19,10 +22,13 @@ Se evalúan siete ternas $(l, n, p)$ para generar familias distintas de curvas 3
 \{(1,2,1), (1,3,1), (2,3,1), (3,4,1), (3,5,2), (4,5,3), (5,6,4)\}.
 \end{equation}
 
-El tiempo de integración es $t_\text{fin} = 50$ con paso $h = 0.01$. Para cada terna se almacena la trayectoria completa y se grafica en un mosaico $3\times3$ con \texttt{plot3}.
+El tiempo de integración es $t_\text{fin} = 50$ con paso $h = 0.01$. Para cada terna se almacena la trayectoria completa y se 
+grafica en un mosaico $3\times3$ con \texttt{plot3}.
 
 \subsection{Implementación numérica}
-El avance temporal se realiza con el método de Euler-Cromer. Primero se actualizan las velocidades con las aceleraciones instantáneas y luego se actualizan las posiciones. Esta variante mejora la estabilidad frente al Euler simple cuando se trata de sistemas oscilatorios.
+El avance temporal se realiza con el método de Euler-Cromer. Primero se actualizan las velocidades con las aceleraciones 
+instantáneas y luego se actualizan las posiciones. Esta variante mejora la estabilidad frente al Euler simple cuando se trata 
+de sistemas oscilatorios.
 
 \inputminted[linenos, frame=lines, fontsize=\footnotesize,
     breaklines=true
@@ -32,4 +38,13 @@ El avance temporal se realiza con el método de Euler-Cromer. Primero se actuali
 
 \vspace{10pt}
 
-En cada subplot se usa \texttt{axis equal} para mantener proporciones reales entre ejes y \texttt{view(30,30)} para una perspectiva uniforme. El resultado es un conjunto de curvas de Lissajous tridimensionales que muestran cómo las razones enteras entre frecuencias controlan la geometría del trazo.
+En cada subplot se usa \texttt{axis equal} para mantener proporciones reales entre ejes y \texttt{view(30,30)} para una perspectiva 
+uniforme. El resultado es un conjunto de curvas de Lissajous tridimensionales que muestran cómo las razones enteras entre frecuencias 
+controlan la geometría del trazo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{images/problem04.png}
+  \caption{Ejecución del ejericicio 4.}
+  \label{fig:prob3_1}
+\end{figure}
