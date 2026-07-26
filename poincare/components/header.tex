@@ -1,16 +1,12 @@
-% components/header.tex
 \pagestyle{fancy}
-\fancyhf{} % Limpiar encabezados y pies de página
+\fancyhf{}
 
-\fancyhead[L]{
-    \begin{minipage}{0.2\textwidth}
-        \includegraphics[height=1.2cm]{img/template/epis_logo.png}
-    \end{minipage}
-}
+\lhead{\raisebox{-0.3\height}{\includegraphics[width=3.5cm, keepaspectratio]{img/template/epis_logo.png}}}
 
-\fancyhead[C]{
-    \begin{minipage}{0.6\textwidth}
-        \centering \scriptsize
+\chead{
+    \fontsize{8}{9}\selectfont 
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
         Universidad Nacional de San Agustín de Arequipa \\
         Facultad de Producción y Servicios \\
         Departamento académico de Ingeniería de Sistemas e informática \\
@@ -18,14 +14,4 @@
     \end{minipage}
 }
 
-\fancyhead[R]{
-    \begin{minipage}{0.15\textwidth}
-        \raggedleft
-        \includegraphics[height=1.2cm]{img/template/abet_logo.png}
-    \end{minipage}
-}
-
-\fancyfoot[C]{\thepage} % Número de página centrado
-
-\renewcommand{\headrulewidth}{0pt} % Quitar línea horizontal
-\setlength{\headheight}{45pt}    % Ajustar espacio para el encabezado
+\rhead{\raisebox{-0.3\height}{\includegraphics[width=2.5cm, keepaspectratio]{img/template/abet_logo.png}}}
