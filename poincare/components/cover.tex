@@ -1,0 +1,62 @@
+\begin{titlepage}
+    % Barra lateral con TikZ para precisión absoluta
+    \begin{tikzpicture}[remember picture, overlay]
+        % Rectángulo gris exterior
+        \draw[line width=1pt, unsared] ([xshift=1.5cm, yshift=-3cm]current page.north west) 
+            rectangle ([xshift=2.8cm, yshift=3cm]current page.south west);
+        
+        % Bloque sólido superior
+        \fill[unsared] ([xshift=1.5cm, yshift=-1.5cm]current page.north west) 
+            rectangle ([xshift=2.8cm, yshift=-3cm]current page.north west);
+            
+        % Letras U N S A
+        \node[anchor=north, text=unsared, font=\Huge\bfseries] at ([xshift=2.15cm, yshift=-6cm]current page.north west) {U};
+        \node[anchor=north, text=unsared, font=\Huge\bfseries] at ([xshift=2.15cm, yshift=-10cm]current page.north west) {N};
+        \node[anchor=north, text=unsared, font=\Huge\bfseries] at ([xshift=2.15cm, yshift=-14cm]current page.north west) {S};
+        \node[anchor=north, text=unsared, font=\Huge\bfseries] at ([xshift=2.15cm, yshift=-18cm]current page.north west) {A};
+    \end{tikzpicture}
+
+    % Contenido derecho
+    \begin{flushright}
+        \begin{minipage}{1.0\textwidth}
+            \centering
+            \vspace{-1cm}
+            \begin{minipage}{0.2\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/template/unsa_logo.png}
+            \end{minipage}
+            \begin{minipage}{0.75\textwidth}
+                \small
+                Universidad Nacional de San Agustín de Arequipa \\
+                Facultad de Producción y Servicios \\
+                Departamento académico de Ingeniería de Sistemas e Informática \\
+                \textbf{Escuela Profesional de Ingeniería de Sistemas}
+            \end{minipage}
+            
+            \vspace{5cm}
+            
+            \begin{flushright}
+                \large \thesubtitulo \\
+                \Huge \textbf{\thetitulo}
+            \end{flushright}
+            
+            \vspace{4cm}
+            
+            \begin{flushright}
+                \begin{tabular}{r l}
+                    \textbf{Curso} & \\
+                    \thecurso & \\ [1.5em]
+                    \textbf{Docente} & \\
+                    \thedocente & \\ [1.5em]
+                    \textbf{Estudiantes} & \\
+                    \theestudiantes &
+                \end{tabular}
+            \end{flushright}
+            
+            \vfill
+            
+            \centering
+            \Large \textbf{\theanio}
+        \end{minipage}
+    \end{flushright}
+\end{titlepage}
