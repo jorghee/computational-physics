@@ -1,6 +1,45 @@
 % Color institucional UNSA (Granate/Rojo oscuro)
 \definecolor{unsared}{HTML}{822524}
 
+\decimalpoint
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+% Configuración de listings (Nord Theme)
+\definecolor{nordbg}{HTML}{2E3440}
+\definecolor{nordfg}{HTML}{D8DEE9}
+\definecolor{nordcomment}{HTML}{4C566A}
+\definecolor{nordkeyword}{HTML}{81A1C1}
+\definecolor{nordstring}{HTML}{A3BE8C}
+
+% Evitar que se seleccionen los números de línea al copiar
+\renewcommand{\thelstnumber}{%
+  \pdfliteral{/Span << /ActualText () >> BDC}\arabic{lstnumber}\pdfliteral{EMC}%
+}
+
+\renewcommand{\lstlistingname}{Código}
+\lstdefinestyle{nordstyle}{
+    backgroundcolor=\color{nordbg},   
+    commentstyle=\color{nordcomment},
+    keywordstyle=\color{nordkeyword}\bfseries,
+    numberstyle=\tiny\color{nordcomment},
+    stringstyle=\color{nordstring},
+    basicstyle=\ttfamily\footnotesize\color{nordfg},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=10pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    frame=lines,
+    rulecolor=\color{nordcomment}
+}
+\lstset{style=nordstyle}
+
 % Comandos para metadatos del documento
 \newcommand{\miTitulo}[1]{\def\thetitulo{#1}}
 \newcommand{\miSubtitulo}[1]{\def\thesubtitulo{#1}}

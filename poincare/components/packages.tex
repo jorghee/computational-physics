@@ -1,20 +1,37 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
-\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lmodern}
+
+% --- Matemáticas y Ciencia ---
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{siunitx}
+
+% --- Gráficos y Colores ---
 \usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% --- Tablas y Flotantes ---
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{tabularx} 
+\usepackage{booktabs}
+
+% --- Código y Citas ---
+\usepackage{listings}
+\usepackage{csquotes}
+
+% --- Diseño y Formato ---
 \usepackage{geometry}
 \usepackage{fancyhdr}
 \usepackage{setspace}
 \usepackage{titlesec}
-\usepackage{tikz}
-\usepackage{array}
-\usepackage{tabularx} 
 \usepackage{calc}
-\renewcommand{\familydefault}{\sfdefault}
 
-
-% Configuración de márgenes
+% Configuración de márgenes base
 \geometry{
   a4paper,
   top=2.5cm,
